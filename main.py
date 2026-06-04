@@ -2,17 +2,18 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI,Request
 from scalar_fastapi import get_scalar_api_reference
 from route.task_route import router as task_router
+from route.admin_route import router as admin_router
 import time
 from database import init_db
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-
+    print("Welcome to lifespan")
     await init_db()
 
     yield
-
+    print("Bye from lifespan")
 
 app = FastAPI(
     title='Task API',
@@ -40,3 +41,4 @@ def scalar():
     )
 
 app.include_router(task_router,prefix="/task",tags=["task"])
+app.include_router(admin_router,prefix="/admin",tags=["admin"])
